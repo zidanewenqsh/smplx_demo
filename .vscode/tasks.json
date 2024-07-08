@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Python File",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${file}",
+                "--model-folder", "models/",
+                "--plot-joints", "True",
+                "--gender", "neutral",
+                "--num-betas", "10",
+                "--num-expression-coeffs", "10",
+                "--plotting-module", "pyrender",
+                "--ext", "npz",
+                "--use-face-contour", "False"
+                // 添加其他必要的参数
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+}

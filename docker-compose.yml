@@ -1,0 +1,51 @@
+#docker-compose.yaml代码
+version: "3.8"
+services:
+  nvidia_cuda_smpl:
+    container_name: smpl
+    # image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:pcl-grpc-trtpy-cu113-cudnn8-devel-ubuntu18-v3.2.4
+    image: registry.cn-hangzhou.aliyuncs.com/phzn/nvidia_cuda:11.8.0-cudnn8-devel-ubuntu18.04-v1.2
+    #command: ["bash", "-c", "/usr/sbin/sshd -D && service xrdp restart"]
+    shm_size: '16gb'
+    networks:
+        mycuda:
+           ipv4_address: 172.18.0.24
+    ports:
+        - "4022:22"
+        - "4389:3389"
+    volumes:
+        # - aihome:${USER_HOME}
+        # - /home/shixian/docker/vscode:${USER_HOME}/.vscode
+        - /home/shixian/docker/clash:${USER_HOME}/clash
+        - /home/shixian/docker/zshrc:${USER_HOME}/.zshrc
+        - /home/shixian/docker/config/clash:${USER_HOME}/.config/clash
+        - /home/shixian/anaconda3/envs:${USER_HOME}/.conda/envs
+        # - /home/shixian/docker/envs:${USER_HOME}/.conda/envs
+        - /home/shixian/share:/nfs
+        - ${PWD}:/workspace
+        # - /home/shixian/Projects:/workspace
+        - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia  #驱动
+              count: "all"
+              #count: 1 #或"all"  #数量
+              #device_ids: ['0','1','2','3'] #gpu id和 count二选一
+              capabilities: [gpu]    #指定需要支持的功能；可以配置多个不同功能
+              #capabilities: [gpu, utility] #支持多种功能
+
+
+
+networks:
+    mycuda:
+        name: aihost 
+        external: true
+
+# volumes:
+#     aihome:
+#         # name: aihome
+#         # external: true
+
+# export DISPLAY=shixian-Inspiron-7472:10.0
